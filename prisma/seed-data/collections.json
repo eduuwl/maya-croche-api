@@ -1,0 +1,20 @@
+[
+  {
+    "id": "col-encanto",
+    "slug": "encanto",
+    "name": "Coleção Encanto",
+    "description": "Peças em viscose e algodão com texturas suaves e silhuetas românticas. Ideal para o verão o ano inteiro.",
+    "tagline": "Arte que veste, feita com amor",
+    "image": "/products/placeholder-encanto.svg",
+    "featured": true
+  },
+  {
+    "id": "col-daisy",
+    "slug": "daisy",
+    "name": "Coleção Daisy",
+    "description": "O boho que faltava no seu guarda-roupa. Flores, leveza e liberdade em cada ponto.",
+    "tagline": "Boho que faltava no seu guarda-roupa",
+    "image": "/products/placeholder-daisy.svg",
+    "featured": true
+  }
+]

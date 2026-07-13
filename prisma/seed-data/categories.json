@@ -1,0 +1,32 @@
+[
+  {
+    "id": "cat-vestidos",
+    "slug": "vestidos",
+    "name": "Vestidos",
+    "description": "Peças fluidas e artesanais para momentos especiais."
+  },
+  {
+    "id": "cat-tops",
+    "slug": "tops",
+    "name": "Tops",
+    "description": "Tops leves em crochê para o dia a dia."
+  },
+  {
+    "id": "cat-blusas",
+    "slug": "blusas",
+    "name": "Blusas",
+    "description": "Blusas delicadas com acabamento impecável."
+  },
+  {
+    "id": "cat-conjuntos",
+    "slug": "conjuntos",
+    "name": "Conjuntos",
+    "description": "Combinações coordenadas feitas à mão."
+  },
+  {
+    "id": "cat-acessorios",
+    "slug": "acessorios",
+    "name": "Acessórios",
+    "description": "Bolsas, chapéus e detalhes que completam o look."
+  }
+]

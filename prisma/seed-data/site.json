@@ -1,0 +1,34 @@
+{
+  "name": "Maya Crochê",
+  "tagline": "Arte que veste. Feita com amor, usada com estilo.",
+  "hero": {
+    "title": "Peças de crochê feitas à mão",
+    "subtitle": "Cada ponto conta uma história. Descubra vestidos, tops e conjuntos artesanais pensados para vestir com leveza e presença.",
+    "ctaLabel": "Ver coleção",
+    "ctaHref": "/produtos"
+  },
+  "about": {
+    "title": "Além da agulha",
+    "paragraphs": [
+      "Olá! Sou a Maya, artesã apaixonada por crochê. Cada peça nasce do zero, com fios selecionados e técnicas tradicionais que transformam linha em arte vestível.",
+      "Minha loja é o meu orgulho e a minha paixão. Trabalho manualmente em cada detalhe porque sei que estou criando algo único e especial para você — confortável, bonito e feito para durar.",
+      "Ao escolher minhas criações, você apoia uma artesã dedicada e leva para casa um pedacinho dessa paixão. Seja bem-vinda à Maya Crochê."
+    ],
+    "artisanName": "Maya"
+  },
+  "contact": {
+    "whatsapp": "5511999999999",
+    "email": "contato@mayacroche.com.br",
+    "city": "Belém — PA"
+  },
+  "measures": {
+    "intro": "Consulte a tabela e compare suas medidas com as indicadas. Assim você terá certeza de que sua escolha será do tamanho certo.",
+    "rows": [
+      { "size": "PP", "bust": "80–84", "waist": "60–64", "hip": "86–90" },
+      { "size": "P", "bust": "84–88", "waist": "64–68", "hip": "90–94" },
+      { "size": "M", "bust": "88–94", "waist": "68–74", "hip": "94–100" },
+      { "size": "G", "bust": "94–100", "waist": "74–80", "hip": "100–106" },
+      { "size": "GG", "bust": "100–108", "waist": "80–88", "hip": "106–114" }
+    ]
+  }
+}

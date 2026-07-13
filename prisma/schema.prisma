@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProductSize {
+  PP
+  P
+  M
+  G
+  GG
+  UNICO
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+
+  price       Int
+
+  featured    Boolean  @default(false)
+  bestSeller  Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  categoryId   String
+  collectionId String?
+
+  category    Category   @relation(fields: [categoryId], references: [id])
+  collection  Collection? @relation(fields: [collectionId], references: [id])
+
+  images ProductImage[]
+  sizes  ProductSizeItem[]
+  colors ProductColor[]
+}
+
+model Category {
+  id          String @id @default(cuid())
+  slug        String @unique
+  name        String
+  description String
+
+  products Product[]
+}
+
+model Collection {
+  id          String @id @default(cuid())
+  slug        String @unique
+  name        String
+  description String
+  tagline     String
+  image       String
+  featured    Boolean @default(false)
+
+  products Product[]
+}
+
+model ProductImage {
+  id        String @id @default(cuid())
+  url       String
+  order     Int @default(0)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductSizeItem {
+  id        String @id @default(cuid())
+
+  size ProductSize
+
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductColor {
+  id        String @id @default(cuid())
+
+  color String
+
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model SiteConfig {
+
+  id String @id @default(cuid())
+
+  name String
+  tagline String
+
+  heroTitle String
+  heroSubtitle String
+  heroCtaLabel String
+  heroCtaHref String
+
+  aboutTitle String
+  artisanName String
+
+  contactWhatsapp String
+  contactEmail String
+  contactCity String
+
+  measuresIntro String
+
+  aboutParagraphs AboutParagraph[]
+  measureRows     MeasureRow[]
+}
+
+model AboutParagraph {
+
+  id String @id @default(cuid())
+
+  text String
+
+  order Int
+
+  siteConfigId String
+
+  siteConfig SiteConfig @relation(fields:[siteConfigId], references:[id], onDelete: Cascade)
+}
+
+model MeasureRow {
+
+  id String @id @default(cuid())
+
+  size String
+
+  bust String
+
+  waist String
+
+  hip String
+
+  order Int
+
+  siteConfigId String
+
+  siteConfig SiteConfig @relation(fields:[siteConfigId], references:[id], onDelete: Cascade)
+}
