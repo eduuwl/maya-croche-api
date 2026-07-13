@@ -39,6 +39,7 @@ model Product {
   images ProductImage[]
   sizes  ProductSizeItem[]
   colors ProductColor[]
+  orderItems OrderItem[]
 }
 
 model Category {
@@ -144,4 +145,116 @@ model MeasureRow {
   siteConfigId String
 
   siteConfig SiteConfig @relation(fields:[siteConfigId], references:[id], onDelete: Cascade)
+}
+
+// ---------- Área administrativa ----------
+
+enum UserRole {
+  ADMIN
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(ADMIN)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  IN_PRODUCTION
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  orderNumber Int         @unique @default(autoincrement())
+  status      OrderStatus @default(PENDING)
+
+  customerName  String
+  customerPhone String
+  customerEmail String?
+
+  addressStreet       String
+  addressNumber       String
+  addressComplement   String?
+  addressNeighborhood String
+  addressCity         String
+  addressState        String
+  addressZipCode      String
+
+  notes      String?
+  totalPrice Int
+
+  items OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderItem {
+  id String @id @default(cuid())
+
+  orderId String
+  order   Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  // snapshot dos dados do produto no momento do pedido (produto pode mudar de preço/ser removido depois)
+  productName String
+  productSlug String
+  unitPrice   Int
+  size        String?
+  color       String?
+  quantity    Int
+}
+
+enum QuoteStatus {
+  NEW
+  IN_PROGRESS
+  ANSWERED
+  CLOSED
+}
+
+model QuoteRequest {
+  id String @id @default(cuid())
+
+  name        String
+  phone       String
+  email       String?
+  description String
+
+  status     QuoteStatus @default(NEW)
+  adminNotes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ContactStatus {
+  NEW
+  READ
+  ANSWERED
+}
+
+model ContactMessage {
+  id String @id @default(cuid())
+
+  name    String
+  email   String
+  phone   String?
+  message String
+
+  status ContactStatus @default(NEW)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

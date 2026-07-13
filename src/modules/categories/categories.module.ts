@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { CategoriesController } from './categories.controller';
+import {
+  AdminCategoriesController,
+  CategoriesController,
+} from './categories.controller';
 import { CategoriesService } from './categories.service';
 
 @Module({
-  controllers: [CategoriesController],
-  providers: [CategoriesService]
+  controllers: [CategoriesController, AdminCategoriesController],
+  providers: [CategoriesService],
 })
 export class CategoriesModule {}

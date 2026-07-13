@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcryptjs';
 import { mapSizeFromContract } from '../src/common/mappers/product-size.mapper';
 
 import categoriesData from './seed-data/categories.json';
@@ -100,6 +101,28 @@ async function main() {
       },
     },
   });
+
+  console.log('Seedando usuário administrador inicial...');
+  const adminEmail = process.env.ADMIN_SEED_EMAIL ?? 'admin@mayacroche.com.br';
+  const adminName = process.env.ADMIN_SEED_NAME ?? 'Admin';
+  const adminPassword = process.env.ADMIN_SEED_PASSWORD;
+
+  if (!adminPassword) {
+    console.warn(
+      'ADMIN_SEED_PASSWORD não definida no .env — pulando criação do admin inicial. Defina a variável e rode o seed novamente.',
+    );
+  } else {
+    const existingAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
+    if (existingAdmin) {
+      console.log(`Usuário admin "${adminEmail}" já existe, mantendo como está.`);
+    } else {
+      const passwordHash = await bcrypt.hash(adminPassword, 10);
+      await prisma.user.create({
+        data: { name: adminName, email: adminEmail, passwordHash },
+      });
+      console.log(`Usuário admin "${adminEmail}" criado.`);
+    }
+  }
 
   console.log('Seed concluído com sucesso!');
 }

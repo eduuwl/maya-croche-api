@@ -14,7 +14,14 @@ services:
     environment:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/maya_croche
       JWT_SECRET: supersecret
+      JWT_EXPIRES_IN: 1d
       PORT: 3000
+      ADMIN_SEED_NAME: Admin
+      ADMIN_SEED_EMAIL: admin@mayacroche.com.br
+      ADMIN_SEED_PASSWORD: troque-esta-senha
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
 
     restart: unless-stopped
 
