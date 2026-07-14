@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../database/prisma.service';
+import { ShippingService } from '../shipping/shipping.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrderResponseDto } from './dto/order-response.dto';
@@ -19,7 +20,10 @@ type OrderWithRelations = Prisma.OrderGetPayload<{
 
 @Injectable()
 export class OrdersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly shippingService: ShippingService,
+  ) {}
 
   async create(dto: CreateOrderDto): Promise<OrderResponseDto> {
     const productIds = [...new Set(dto.items.map((item) => item.productId))];
@@ -50,9 +54,21 @@ export class OrdersService {
       };
     });
 
-    const totalPrice = items.reduce(
+    const subtotalPrice = items.reduce(
       (sum, item) => sum + item.unitPrice * item.quantity,
       0,
+    );
+
+    const shipping = await this.shippingService.calculateShipping(
+      dto.addressZipCode,
+      dto.items.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
+    );
+
+    const totalPrice = Number(
+      (subtotalPrice + shipping.price).toFixed(2),
     );
 
     const order = await this.prisma.order.create({
@@ -66,8 +82,12 @@ export class OrdersService {
         addressNeighborhood: dto.addressNeighborhood,
         addressCity: dto.addressCity,
         addressState: dto.addressState,
-        addressZipCode: dto.addressZipCode,
+        addressZipCode: this.shippingService.normalizeCep(dto.addressZipCode),
         notes: dto.notes,
+        subtotalPrice,
+        shippingPrice: shipping.price,
+        shippingCarrier: shipping.carrier,
+        shippingEstimatedDays: shipping.estimatedDays,
         totalPrice,
         items: { create: items },
       },
@@ -126,6 +146,10 @@ export class OrdersService {
         zipCode: order.addressZipCode,
       },
       notes: order.notes,
+      subtotalPrice: order.subtotalPrice,
+      shippingPrice: order.shippingPrice,
+      shippingCarrier: order.shippingCarrier,
+      shippingEstimatedDays: order.shippingEstimatedDays ?? undefined,
       totalPrice: order.totalPrice,
       items: order.items.map((item) => ({
         id: item.id,
