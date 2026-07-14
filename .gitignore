@@ -46,6 +46,9 @@ lerna-debug.log*
 .temp
 .tmp
 
+# Claude Code local settings
+.claude/
+
 # Runtime data
 pids
 *.pid
