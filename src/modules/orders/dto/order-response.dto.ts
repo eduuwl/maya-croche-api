@@ -28,6 +28,10 @@ export interface OrderResponseDto {
     zipCode: string;
   };
   notes: string | null;
+  subtotalPrice: number;
+  shippingPrice: number;
+  shippingCarrier: string | null;
+  shippingEstimatedDays?: number;
   totalPrice: number;
   items: OrderItemResponseDto[];
   createdAt: Date;

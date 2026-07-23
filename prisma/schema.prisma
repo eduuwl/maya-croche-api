@@ -191,7 +191,11 @@ model Order {
   addressZipCode      String
 
   notes      String?
-  totalPrice Int
+  subtotalPrice         Int
+  shippingPrice         Float    @default(0)
+  shippingCarrier       String?
+  shippingEstimatedDays Int?
+  totalPrice            Float
 
   items OrderItem[]
 
