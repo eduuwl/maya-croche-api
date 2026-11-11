@@ -13,10 +13,12 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { QuotesModule } from './modules/quotes/quotes.module';
 import { ContactModule } from './modules/contact/contact.module';
 import { ShippingModule } from './modules/shipping/shipping.module';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
     DatabaseModule,
+    MailModule,
     ProductsModule,
     CategoriesModule,
     CollectionsModule,
