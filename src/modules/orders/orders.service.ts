@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../database/prisma.service';
+import { MailService } from '../mail/mail.service';
 import { ShippingService } from '../shipping/shipping.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -23,6 +24,7 @@ export class OrdersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly shippingService: ShippingService,
+    private readonly mailService: MailService,
   ) {}
 
   async create(dto: CreateOrderDto): Promise<OrderResponseDto> {
@@ -67,9 +69,7 @@ export class OrdersService {
       })),
     );
 
-    const totalPrice = Number(
-      (subtotalPrice + shipping.price).toFixed(2),
-    );
+    const totalPrice = Number((subtotalPrice + shipping.price).toFixed(2));
 
     const order = await this.prisma.order.create({
       data: {
@@ -94,7 +94,9 @@ export class OrdersService {
       include: orderInclude,
     });
 
-    return this.toResponseDto(order);
+    const response = this.toResponseDto(order);
+    await this.mailService.notifyNewOrder(response);
+    return response;
   }
 
   async findAll(): Promise<OrderResponseDto[]> {
